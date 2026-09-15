@@ -18,7 +18,7 @@ dotnet run --project src/Cli
 
 ## Середовище
 
-- .NET SDK 9.0.317
+- .NET SDK 10.0.401
 - macOS Ventura 13.5 (Darwin 22.6.0) на Apple M1 (ARM64)
 - RID: osx-arm64
 
@@ -26,8 +26,8 @@ dotnet run --project src/Cli
 
 | RID       | Розмір |
 |-----------|--------|
-| osx-arm64 | 81 MB  |
-| linux-x64 | 76 MB  |
+| osx-arm64 | 83 MB  |
+| linux-x64 | 79 MB  |
 
 Публікація виконана командою:
 dotnet publish src/Cli -c Release -r RID --self-contained true
