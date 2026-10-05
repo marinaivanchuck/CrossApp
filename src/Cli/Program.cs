@@ -1,54 +1,28 @@
-﻿using System.Text;
-using System.Text.Json;
-using System.Text.Encodings.Web;
-using Core;
+using System.Text;
+using Core.Dto;
+using Core.Import;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-EnvironmentReport report = EnvironmentInfo.Collect();
-bool asJson = args.Contains("--json");
+string path = args.Length > 0 ? args[0] : Path.Combine("data", "sample.csv");
 
-const string Student = "Іванчук Марина, група ФЕІ-35";
-const string Domain = "Склад (товари, партії, залишки, переміщення)";
+if (!File.Exists(path))
+{
+    Console.WriteLine($"Файл не знайдено: {Path.GetFullPath(path)}");
+    return 1;
+}
 
-if (asJson)
+ImportResult<ProductDto> result = ProductCsvImporter.Load(path);
+
+Console.WriteLine($"Завантажено записів: {result.Items.Count}");
+foreach (ProductDto p in result.Items.Take(5))
+    Console.WriteLine($" {p.Id,-6} {p.Sku,-10} {p.Name,-30} {p.Quantity,6} {p.Unit}");
+
+if (result.Errors.Count > 0)
 {
-    var data = new
-    {
-        Student,
-        report.OsDescription,
-        report.OsVersion,
-        report.ProcessArchitecture,
-        report.DotNetVersion,
-        Runtime = report.FrameworkDescription,
-        report.DetectedRid,
-        report.ReportedRid,
-        report.BuildNote,
-        AppDirectory = report.BaseDirectory,
-        CurrentDirectory = report.CurrentDirectory,
-        Domain
-    };
-    Console.WriteLine(JsonSerializer.Serialize(data, new JsonSerializerOptions
-    {
-        WriteIndented = true,
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-    }));
+    Console.WriteLine($"Пропущено рядків: {result.Errors.Count}");
+    foreach (string e in result.Errors)
+        Console.WriteLine($" ! {e}");
 }
-else
-{
-    Console.WriteLine("CrossApp – практикум з крос-платформного програмування");
-    Console.WriteLine($"Студент: {Student}");
-    Console.WriteLine(new string('-', 52));
-    Console.WriteLine($"ОС (OSDescription) : {report.OsDescription}");
-    Console.WriteLine($"ОС (Environment) : {report.OsVersion}");
-    Console.WriteLine($"Архітектура процесу : {report.ProcessArchitecture}");
-    Console.WriteLine($"Версія .NET (CLR) : {report.DotNetVersion}");
-    Console.WriteLine($"Runtime : {report.FrameworkDescription}");
-    Console.WriteLine($"RID (визначено) : {report.DetectedRid}");
-    Console.WriteLine($"RID (від .NET) : {report.ReportedRid}");
-    Console.WriteLine($"Каталог застосунку : {report.BaseDirectory}");
-    Console.WriteLine($"Поточний каталог : {report.CurrentDirectory}");
-    Console.WriteLine($"Build note : {report.BuildNote}");
-    Console.WriteLine(new string('-', 52));
-    Console.WriteLine($"Предметна область: {Domain}");
-}
+
+return 0;
