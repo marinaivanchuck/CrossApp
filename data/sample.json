@@ -1,0 +1,7 @@
+[
+  { "id": "P-001", "sku": "SKU-001", "name": "Цемент М400 25кг", "unit": "шт", "quantity": 120 },
+  { "id": "P-002", "sku": "SKU-002", "name": "Пісок будівельний", "unit": "т", "quantity": 18 },
+  { "id": "P-003", "sku": "SKU-003", "name": "Цегла червона", "unit": "шт", "quantity": 4200 },
+  { "id": "", "sku": "SKU-004", "name": "Фарба", "unit": "шт", "quantity": 36 },
+  { "id": "P-005", "sku": "SKU-005", "name": "Шпаклівка", "unit": "кг", "quantity": -5 }
+]
