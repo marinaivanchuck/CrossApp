@@ -48,10 +48,26 @@
 - `ToDto()` / `FromDto()` — мапінг із форматом тижня 3.
 - Колекція `_products` — приватна; назовні — `IReadOnlyList`.
 
+## Сервісний шар (лаб 5)
+
+- **Інтерфейс:** `ICatalogStore` (`src/Core/Abstractions/ICatalogStore.cs`)
+- **Реалізації:**
+  - `InMemoryCatalogStore` — у пам'яті
+  - `FileCatalogStore` — у JSON-файлі `data/catalog.json`
+  - `CachingCatalogStore` — декоратор із кешем (додаткове 1)
+- **Сервіс:** `CatalogService` (`src/Core/Services/CatalogService.cs`)
+- **Фабрика:** `StoreFactory` (додаткове 3)
+- **Composition Root:** `src/Cli/Program.cs`
+
 ## Запуск
 
-dotnet build
+У пам'яті (дані зникають після виходу):
 dotnet run --project src/Cli
+
+У файлі (дані накопичуються в `data/catalog.json`):
+
+dotnet run --project src/Cli -- --file
+
 
 ## Середовище
 
