@@ -8,10 +8,8 @@ public static class StoreFactory
     {
         bool useFile = args.Contains("--file");
 
-        ICatalogStore baseStore = useFile
+        return useFile
             ? new FileCatalogStore(Path.Combine(Directory.GetCurrentDirectory(), "data", "catalog.json"))
             : new InMemoryCatalogStore(SampleData.Products());
-
-        return new CachingCatalogStore(baseStore);
     }
 }
